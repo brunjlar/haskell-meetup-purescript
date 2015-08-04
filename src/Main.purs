@@ -23,6 +23,7 @@ getPerson :: forall eff. Eff (dom :: DOM, console :: CONSOLE | eff) (Maybe Perso
 getPerson = do
     mn <- getValueById "name"
     ma <- getIntValueById "age"
+    log $ (show mn) ++ " - " ++ (show ma)
     return do
         n <- mn
         a <- ma
@@ -49,3 +50,8 @@ main = do
     onInput "name" inputHandler
     onInput "age" inputHandler
     onClick "birthday" clickHandler
+    div <- createElement "div"
+    hello <- createTextNode "Hello, World!"
+    div `appendChild` hello
+    body >>= (`appendChild` div)
+    
