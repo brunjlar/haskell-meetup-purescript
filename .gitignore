@@ -2,3 +2,5 @@ bower_components/
 .psci
 output/
 .psci_modules/
+dist/
+.browserify-cache.json
