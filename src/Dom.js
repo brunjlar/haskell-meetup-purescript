@@ -72,30 +72,20 @@ exports.getValue = function (element) {
     };
 };
 
-exports.setValue = function (element) {
-    return function (value) {
-        return function () {
-            element.value = value;
-            return {};
-        };
-    };
-};
-
-function setById(name) {
-    return function (id) {
+function setProperty(name) {
+    return function (element) {
         return function (value) {
             return function () {
-                var element = document.getElementById(id);
-                if (element) {
-                    element[name] = value;
-                }
+                element[name] = value;
                 return {};
             };
         };
     };
 }
 
-exports.onInput = setById("oninput");
+exports.setValue = setProperty("value");
 
-exports.onClick = setById("onclick");
+exports.onInput = setProperty("oninput");
+
+exports.onClick = setProperty("onclick");
 
