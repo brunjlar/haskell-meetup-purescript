@@ -10,7 +10,7 @@ import Dom
 (>>) :: forall m a b. (Bind m) => m a -> m b -> m b
 (>>) ma mb = ma >>= (\_ -> mb)
 
-type Aff e a = ContT Unit (Eff e) a
+type Aff e = ContT Unit (Eff e)
 
 runAff :: forall e a. Aff e a -> Eff e Unit
 runAff x = runContT x (\_ -> return unit)

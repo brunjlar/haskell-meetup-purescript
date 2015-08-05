@@ -27,9 +27,9 @@ foreign import getAttribute :: forall e. DomElement -> String -> EffDom e (Maybe
 
 foreign import setAttribute :: forall e. DomElement -> String -> String -> EffDom e Unit
 
-foreign import onInput :: forall e. DomElement -> EffDom e Unit -> EffDom e Unit
+foreign import onInput :: forall e a. DomElement -> EffDom e Unit -> EffDom e Unit
 
-foreign import onClick :: forall e. DomElement -> EffDom e Unit -> EffDom e Unit
+foreign import onClick :: forall e a. DomElement -> EffDom e Unit -> EffDom e Unit
 
 foreign import getValue :: forall e. DomElement -> EffDom e (Maybe String)
 
