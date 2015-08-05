@@ -2,16 +2,14 @@
 
 // module Dom
 
-var Maybe = require("Data.Maybe");
-
 exports.body = function () {
     return document.body;
 };
 
-exports.getElementById = function (id) {
+exports.getElementByIdImpl = function (just, nothing, id) {
     return function () {
         var element = document.getElementById(id);
-        return element ? Maybe.Just.create(element) : Maybe.Nothing.value;
+        return element ? just(element) : nothing;
     };
 };
 
@@ -27,65 +25,57 @@ exports.createTextNode = function (text) {
     };
 };
 
-exports.appendChild = function (parent) {
-    return function (child) {
-        return function () {
-            parent.appendChild(child);
-            return {};
-        };
+exports.appendChildImpl = function (parent, child) {    
+    return function () {
+        parent.appendChild(child);
+        return {};
     };
 };
 
-exports.removeChild = function (parent) {
-    return function (child) {
-        return function () {
-            parent.removeChild(child);
-            return {};
-        };
+exports.removeChildImpl = function (parent, child) {
+    return function () {
+        parent.removeChild(child);
+        return {};
     };
 };
 
-exports.getAttribute = function (element) {
-    return function (attr) {
-        return function () {
-            var value = element.getAttribute(attr);
-            return value ? Maybe.Just.create(value) : Maybe.Nothing.value;
-        };
+exports.getAttributeImpl = function (just, nothing, element, attr) {    
+    return function () {
+        var value = element.getAttribute(attr);
+        return value ? just(value) : nothing;
     };
 };
 
-exports.setAttribute = function (element) {
-    return function (attr) {
-        return function (value) {
-            return function () {
-                element.setAttribute(attr, value);
-                return {};
-            };
-        };
+exports.setAttributeImpl = function (element, attr, value) {
+    return function () {
+        element.setAttribute(attr, value);
+        return {};
     };
 };
 
-exports.getValue = function (element) {
+exports.getValueImpl = function (just, nothing, element) {
     return function () {
         var value = element.value;
-        return value ? Maybe.Just.create(value) : Maybe.Nothing.value;
+        return value ? just(value) : nothing;
     };
 };
 
-function setProperty(name) {
-    return function (element) {
-        return function (value) {
-            return function () {
-                element[name] = value;
-                return {};
-            };
-        };
+function setProperty(name, element, value) {
+    return function () {
+        element[name] = value;
+        return {};
     };
 }
 
-exports.setValue = setProperty("value");
+exports.setValueImpl = function (element, value) {
+    return setProperty("value", element, value);
+}
 
-exports.onInput = setProperty("oninput");
+exports.onInputImpl = function (element, handler) {
+    return setProperty("oninput", element, handler);
+}
 
-exports.onClick = setProperty("onclick");
+exports.onClickImpl = function (element, handler) {
+    return setProperty("onclick", element, handler);
+}
 
